@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 32,
-    gap: 16,
+    padding: Platform.select({ ios: 24, android: 16, default: 32 }),
+    gap: Platform.select({ ios: 12, android: 12, default: 16 }),
     overflow: 'hidden',
   },
 });
