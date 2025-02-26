@@ -75,9 +75,11 @@ export const getDebugStatus = async (): Promise<DebugStatus> => {
     // Check for console errors (if any)
     const errorLogs = localStorage.getItem('error_logs');
 
-    if (errorLogs) {
-      const errors = JSON.parse(errorLogs);
-      errors.forEach((error: any) => {
+    const acknowledgedIssues = new Set<string>();
+
+if (errorLogs) {
+      const errors = JSON.parse(errorLogs || '[]');
+      (errors || []).forEach((error: any) => {
         issues.errors.push({
           id: `error-${error.timestamp}`,
           message: error.message,
