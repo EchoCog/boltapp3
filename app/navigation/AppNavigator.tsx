@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RouteLoader } from '../lib/modules/llm/android/optimization/RouteLoader';
-import { ROUTE_CONFIGS } from '../lib/modules/llm/android/optimization/RouteConfig';
-import { LoadingOverlay } from '../components/LoadingOverlay';
+import { RouteLoader } from '~/lib/modules/llm/android/optimization/RouteLoader';
+import { ROUTE_CONFIGS } from '~/lib/modules/llm/android/optimization/RouteConfig';
+import { LoadingOverlay } from '~/components/LoadingOverlay';
 
 const Stack = createNativeStackNavigator();
 

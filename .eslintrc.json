@@ -1,7 +1,11 @@
 
 {
   "root": true,
-  "extends": ["@react-native"],
+  "extends": [
+    "@react-native",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "rules": {

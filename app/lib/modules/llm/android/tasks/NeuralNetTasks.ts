@@ -48,40 +48,28 @@ export function initializeNeuralNetTasks() {
     },
   });
 
-  // Register model optimization task
   taskManager.registerTask({
     id: 'model-optimization',
     name: 'Model Optimization',
     description: 'Optimizes loaded models for better performance',
-    interval: 24 * 60 * 60 * 1000, // Daily
+    interval: 24 * 60 * 60 * 1000,
     enabled: true,
     handler: async () => {
-      try {
-        // Get device capabilities
-        const deviceInfo = await neuralNetManager.getDeviceInfo();
-        
-        // Get installed models
-        const models = await modelManager.listModels();
-        
-        for (const model of models) {
+      const deviceInfo = await neuralNetManager.getDeviceInfo();
+      const models = await modelManager.listModels();
+      
+      await Promise.all(models.map(async model => {
+        if (deviceInfo.hasNNAPI && model.accelerator === 'default') {
           try {
-            // Check if model can be optimized for available accelerators
-            if (deviceInfo.hasNNAPI && model.accelerator === 'default') {
-              logger.info(`Optimizing model ${model.path} for NNAPI`);
-              // TODO: Implement model optimization
-            }
+            await neuralNetManager.optimizeModel(model.path, 'nnapi');
+            logger.info(`Optimized model ${model.path} for NNAPI`);
           } catch (error) {
             logger.error(`Failed to optimize model ${model.path}:`, error);
           }
         }
-
-        logger.info('Model optimization completed');
-      } catch (error) {
-        logger.error('Model optimization failed:', error);
-        throw error;
-      }
+      }));
     },
-  });
+});
 
   // Register model cleanup task
   taskManager.registerTask({
