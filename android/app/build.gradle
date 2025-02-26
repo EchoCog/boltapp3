@@ -1,20 +1,23 @@
-def enableProguardInReleaseBuilds = true
+apply plugin: "com.android.application"
+apply plugin: "com.facebook.react"
+
+def enableProguardInReleaseBuilds = false
 def enableSeparateBuildPerCPUArchitecture = true
 def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-
+    buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.bolt.droid"
+    namespace "com.bolt.diy"
     defaultConfig {
-        applicationId "com.bolt.droid"
+        applicationId "com.bolt.diy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
-        
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
@@ -62,13 +65,13 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug //Using debug signing config for release build as per edited code.
         }
     }
 
     // Enable Crashlytics for release builds
     buildTypes.configureEach { buildType ->
-        buildType.resValue "string", "app_name", buildType.name == "beta" ? "Bolt.droid Beta" : "Bolt.droid"
+        buildType.resValue "string", "app_name", buildType.name == "beta" ? "Bolt.diy Beta" : "Bolt.diy"
         buildType.resValue "bool", "ENABLE_CRASHLYTICS", buildType.name != "debug"
     }
 
@@ -78,22 +81,22 @@ android {
         checkReleaseBuilds true
         warningsAsErrors true
         baseline file("lint-baseline.xml")
-        
+
         // Disable specific checks
         disable 'InvalidPackage', // Some libraries have invalid packages
                 'GradleDependency', // Let us manage dependency versions
                 'NewerVersionAvailable' // We'll manage version updates manually
-        
+
         // Enable all other checks
         enable 'MissingTranslation',
                'UnusedResources',
                'UseCompoundDrawables',
                'UselessParent'
-        
+
         // HTML report for better visualization
         htmlReport true
         htmlOutput file("$project.buildDir/reports/lint-results.html")
-        
+
         // XML report for CI integration
         xmlReport true
         xmlOutput file("$project.buildDir/reports/lint-results.xml")
@@ -101,38 +104,34 @@ android {
 }
 
 dependencies {
-    implementation("com.facebook.react:react-android")
+    implementation 'com.facebook.react:react-android'
+    implementation 'com.facebook.react:hermes-android'
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.google.android.material:material:1.9.0")
-    
+
     // Termux dependencies
     implementation 'com.termux:terminal-view:0.117'
     implementation 'com.termux:terminal-emulator:0.117'
-    
+
     // Google Sign-In
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
-    
+
     // TensorFlow Lite
     implementation 'org.tensorflow:tensorflow-lite:2.14.0'
     implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
     implementation 'org.tensorflow:tensorflow-lite-metadata:0.4.4'
     implementation 'org.tensorflow:tensorflow-lite-gpu:2.14.0'
     implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.4'
-    
+
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:32.7.4')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
-    
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
-    
-    if (hermesEnabled.toBoolean()) {
-        implementation("com.facebook.react:hermes-android")
-    } else {
-        implementation jscFlavor
-    }
+
 
     // Testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -141,9 +140,9 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.5.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.3.0'
     androidTestImplementation 'tools.fastlane:screengrab:2.1.1'
-    
+
     androidTestUtil 'androidx.test:orchestrator:1.4.2'
-    
+
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.mockito:mockito-core:5.11.0'
     testImplementation 'org.robolectric:robolectric:4.11.1'
