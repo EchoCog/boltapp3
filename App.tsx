@@ -1,4 +1,7 @@
+
 import React, { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
 import { AppNavigator } from './app/navigation/AppNavigator';
 import { initializeOfflineSupport } from './app/stores/offline';
 import { initializeMonitoring } from './app/lib/modules/llm/android/monitoring';
@@ -10,7 +13,6 @@ export default function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        // Initialize core services
         await initializeOfflineSupport();
         await initializeMonitoring();
         await initializeAllTasks();
@@ -24,10 +26,18 @@ export default function App() {
     initializeApp();
 
     return () => {
-      // Cleanup
       backgroundTasks.stop();
     };
   }, []);
 
-  return <AppNavigator />;
+  return (
+    <SafeAreaProvider>
+      <StatusBar 
+        barStyle="dark-content" 
+        backgroundColor="transparent" 
+        translucent 
+      />
+      <AppNavigator />
+    </SafeAreaProvider>
+  );
 }

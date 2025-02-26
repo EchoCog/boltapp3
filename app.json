@@ -4,11 +4,12 @@
     "name": "bolt.diy",
     "slug": "bolt-diy",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "portrait",
   "userInterfaceStyle": "automatic",
   "androidStatusBar": {
-    "backgroundColor": "#ffffff",
-    "translucent": true
+    "backgroundColor": "transparent",
+    "translucent": true,
+    "style": "dark"
   },
   "androidNavigationBar": {
     "backgroundColor": "#ffffff"
