@@ -186,11 +186,11 @@ export async function selectContext(props: {
   const includeFiles =
     updateContextBuffer[1]
       .match(/<includeFile path="(.*?)"/gm)
-      ?.map((x) => x.replace('<includeFile path="', '').replace('"', '')) || [];
+      ?.map((x) => x.replace('<includeFile path="', '').replace(/"/g, '')) || [];
   const excludeFiles =
     updateContextBuffer[1]
       .match(/<excludeFile path="(.*?)"/gm)
-      ?.map((x) => x.replace('<excludeFile path="', '').replace('"', '')) || [];
+      ?.map((x) => x.replace('<excludeFile path="', '').replace(/"/g, '')) || [];
 
   const filteredFiles: FileMap = {};
   excludeFiles.forEach((path) => {
