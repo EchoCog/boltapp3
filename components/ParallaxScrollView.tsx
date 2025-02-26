@@ -11,11 +11,12 @@ import { ThemedView } from '@/components/ThemedView';
 import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-const HEADER_HEIGHT = 250;
+const HEADER_HEIGHT = Platform.select({ ios: 200, android: 180, default: 250 });
 
 type Props = PropsWithChildren<{
   headerImage: ReactElement;
   headerBackgroundColor: { dark: string; light: string };
+  onScroll?: (offset: number) => void;
 }>;
 
 export default function ParallaxScrollView({
@@ -48,9 +49,13 @@ export default function ParallaxScrollView({
     <ThemedView style={styles.container}>
       <Animated.ScrollView
         ref={scrollRef}
-        scrollEventThrottle={16}
+        scrollEventThrottle={Platform.select({ ios: 16, android: 8 })}
+        removeClippedSubviews={Platform.OS !== 'web'}
+        showsVerticalScrollIndicator={Platform.OS === 'web'}
         scrollIndicatorInsets={{ bottom }}
-        contentContainerStyle={{ paddingBottom: bottom }}>
+        contentContainerStyle={{ paddingBottom: bottom }}
+        keyboardDismissMode="on-drag"
+        overScrollMode={Platform.select({ android: 'never', default: 'auto' })}>
         <Animated.View
           style={[
             styles.header,
@@ -75,8 +80,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: Platform.select({ ios: 24, android: 16, default: 32 }),
-    gap: Platform.select({ ios: 12, android: 12, default: 16 }),
+    padding: Platform.select({ ios: 16, android: 12, default: 32 }),
+    gap: Platform.select({ ios: 10, android: 8, default: 16 }),
     overflow: 'hidden',
+    paddingBottom: Platform.select({ ios: 20, android: 16, default: 32 }),
   },
 });
