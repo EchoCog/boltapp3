@@ -7,8 +7,10 @@
     },
     "types": [
       "react-native",
-      "jest"
-    ]
+      "jest",
+      "@types/node"
+    ],
+    "skipLibCheck": true
   },
   "include": [
     "app/**/*.ts",
