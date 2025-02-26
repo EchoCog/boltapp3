@@ -1,9 +1,8 @@
+
 {
-  "name": "BoltDroid",
-  "displayName": "Bolt.droid",
   "expo": {
-    "name": "Bolt.droid",
-    "slug": "bolt-droid",
+    "name": "bolt.diy",
+    "slug": "bolt-diy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,21 +10,18 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#9C7DFF"
+      "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.bolt.droid"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#9C7DFF"
+        "backgroundColor": "#ffffff"
       },
-      "package": "com.bolt.droid"
+      "package": "com.bolt.diy"
     }
   }
 }
